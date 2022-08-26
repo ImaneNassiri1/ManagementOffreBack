@@ -8,6 +8,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 @Getter
@@ -32,5 +33,5 @@ public class File implements Serializable {
     public String comments;
     @Field(type = FieldType.Date,name = "date")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date date;
+    private Date date= Calendar.getInstance().getTime();
 }

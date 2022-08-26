@@ -2,6 +2,7 @@ package com.example.back_stage_application.Service;
 
 
 
+import com.example.back_stage_application.Document.File;
 import com.example.back_stage_application.Document.Question;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,6 +29,8 @@ import java.util.List;
 public class QuestionSearchService {
 
     private static final String QUESTION_INDEX = "questiondb";
+    private static final String FILE_INDEX = "filedb";
+
 
     private ElasticsearchOperations elasticsearchOperations;
 
@@ -212,6 +215,38 @@ public class QuestionSearchService {
         });
         return questionsMatches;
     }
+
+    ////////////////////////////////////////////////////////// FILE ////////////////////////////////////////////////////
+
+    public List<File> findQuestionsByQuestionfile(final String answer) {
+
+
+        QueryBuilder queryBuilder =
+                QueryBuilders
+                        .matchQuery("question", answer);
+
+
+        Query searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(queryBuilder)
+                .withTrackScores(true)
+                .build();
+
+
+        SearchHits<File> questionHits =
+                elasticsearchOperations
+                        .search(searchQuery,
+                                File.class,
+                                IndexCoordinates.of(FILE_INDEX));
+
+
+        List<File> questionMatches = new ArrayList<File>();
+        questionHits.forEach(searchHit->{
+            questionMatches.add(searchHit.getContent());
+        });
+
+        return questionMatches;
+    }
+
 
 
 }

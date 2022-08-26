@@ -5,7 +5,6 @@ import com.example.back_stage_application.Repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -20,10 +19,11 @@ public class QuestionService {
     ////////////////////////////////////////// CRUD OF QUESTION/////////////////////////////////////////////////////////
     /////////////////////////////////////////1/METHOD TO ADD QUESTION///////////////////////////////////////////////////
     public Question addQuestion(Question question){
-        return questionRepository.save(question);
-    }
-    public Iterable<Question> ADDLISTOFQUESTION(List<Question> questions) {
-        return questionRepository.saveAll(questions);
+
+
+            Question questions=new Question(question.getId(),question.getClient(), question.getQuestion(), question.getResponse(),question.getCategory(),question.getComments());
+            return questionRepository.save(questions);
+
     }
 
     ///////////////////////////////////////2/METHOD TO READ QUESTION////////////////////////////////////////////////////
@@ -47,6 +47,10 @@ public class QuestionService {
     public List<Question> getByCategory(Question question){
         String category=question.getCategory();
         return questionRepository.findByCategory(category);
+    }
+
+    public Iterable<Question> saves(List<Question> question) {
+        return questionRepository.saveAll(question);
     }
 }
 
